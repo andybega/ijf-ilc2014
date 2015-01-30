@@ -1,13 +1,13 @@
-**Replication materials for <br/>
-"Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models"**
+**Replication materials for:<br/>
+Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models**
 ***
 
 For questions contact the corresponding author [Michael Ward](mailto:michael.d.ward@duke.edu) or [Andreas Beger](andreas.beger@duke.edu).
 
-This article is a summary of a longer technical report. The complete [original PITF report](http://arxiv.org/abs/1409.7105) is available on arXiv.org, and contains a large amount of additional information on the method we used for forecasting, accuracy assessments, etc.
+This article is a summary of a longer technical report for the [PITF](http://en.wikipedia.org/wiki/Political_Instability_Task_Force). The complete [original report](http://arxiv.org/abs/1409.7105) is available on arXiv.org, and contains a large amount of additional information on the method we used for forecasting, accuracy assessments, etc.
 
 
-Citation:
+**Citation:**
 
 Beger, Andreas, Cassy L. Dorff, and Michael D. Ward, 2015, "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models," *International Journal of Forecasting*. 
 
@@ -36,7 +36,7 @@ Running the replication
 
 1. [Download](https://github.com/andybega/ijf-ilc2014/archive/master.zip) or [clone](github-mac://openRepo/https://github.com/andybega/ijf-ilc2014) this repository. 
 
-2. Download the 3 data sets on [Dataverse](http://dx.doi.org/10.7910/DVN/28942) and place them in `replication/data`.
+2. Download the data sets on [Dataverse](http://dx.doi.org/10.7910/DVN/28942), at least the 2 beginning with `irc-data` and place them in `replication/data`.
 
 3. In `runme.R`, change the working directory path on line 33.
 
