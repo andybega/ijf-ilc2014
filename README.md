@@ -28,15 +28,15 @@ Getting the code and data
 
 The easiest way to get the replication code is to [download a zip](https://github.com/andybega/ijf-ilc2014/archive/master.zip). Alternatively, you can clone the repository through the Github GUI client ([OS X](https://mac.github.com/), [Windows](https://windows.github.com/)).
 
-The data, including several intermediate results, are available on dataverse: [http://dx.doi.org/10.7910/DVN/27482](http://dx.doi.org/10.7910/DVN/27482).
+The data, including several intermediate results, are available on dataverse: [http://dx.doi.org/10.7910/DVN/28942](http://dx.doi.org/10.7910/DVN/28942).
 
 
 Running the replication
 -----
 
-1. [Download](https://github.com/andybega/rap-ensemble-forecasting/archive/master.zip) or [clone](github-mac://openRepo/https://github.com/andybega/rap-ensemble-forecasting) this repository. 
+1. [Download](https://github.com/andybega/ijf-ilc2014/archive/master.zip) or [clone](github-mac://openRepo/https://github.com/andybega/ijf-ilc2014) this repository. 
 
-2. Download the 3 data sets on [Dataverse](http://dx.doi.org/10.7910/DVN/27482) and place them in `replication/data`.
+2. Download the 3 data sets on [Dataverse](http://dx.doi.org/10.7910/DVN/28942) and place them in `replication/data`.
 
 3. In `runme.R`, change the working directory path on line 33.
 
@@ -48,28 +48,30 @@ Files and scripts
 ------
 
 `data`
-`all_preds.rda` - contains all theme/ensemble predictions from 2001 to 2014-09; used throughout `runme.r` to replicate figures in the same order as in the article, even though the models needed to create it are estimated in the same script   
-`ensemble_data.rda` - calibration/test data to estimate ensemble
-`irc_data_mod.rda` - imputed data
-`ensemble.rda` - saved ensemble model object
-`irc-data-v3.rda` - raw, unimputed source data
-`model_estimates.rda` - saved estimates for the 7 theme models
+
+*`all_preds.rda` - contains all theme/ensemble predictions from 2001 to 2014-09; used throughout `runme.r` to replicate figures in the same order as in the article, even though the models needed to create it are estimated in the same script   
+*`ensemble_data.rda` - calibration/test data to estimate ensemble
+*`irc_data_mod.rda` - imputed data
+*`ensemble.rda` - saved ensemble model object
+*`irc-data-v3.rda` - raw, unimputed source data
+*`model_estimates.rda` - saved estimates for the 7 theme models
 
 `graphics`
+
 Contains the graphics used in the article.
 
 `R/packages`
-`EBMAforecastbeta_0.44.tar.gz` – OS X source package
-`EBMAforecastbeta_0.44.zip` – Windows source package
-`spduration_0.12.tar.gz` – OS X source package
-`spduration_0.12.zip` – Windows source package
+*`EBMAforecastbeta_0.44.tar.gz` – OS X source package
+*`EBMAforecastbeta_0.44.zip` – Windows source package
+*`spduration_0.12.tar.gz` – OS X source package
+*`spduration_0.12.zip` – Windows source package
 
 `R/utilities`
-`ensemble_forecast.r` - helper functions to calculate ensemble forecast
-`gather_preds.r` - gathers all theme/ensemble predictions from 2001 to 2014-09 in one data frame, `all_preds.rda`
-`theme_models.r` - helper functions for theme model fit
-`varDecomp.r` - helpfer functions for variable variance decomposition
-`worldMap.r` - function for choropleth worldmap
+* `ensemble_forecast.r` - helper functions to calculate ensemble forecast
+* `gather_preds.r` - gathers all theme/ensemble predictions from 2001 to 2014-09 in one data frame, `all_preds.rda`
+*`theme_models.r` - helper functions for theme model fit
+*`varDecomp.r` - helpfer functions for variable variance decomposition
+*`worldMap.r` - function for choropleth worldmap
 
 
 
