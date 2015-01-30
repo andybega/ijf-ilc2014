@@ -48,30 +48,28 @@ Files and scripts
 ------
 
 `data`
-
-*`all_preds.rda` - contains all theme/ensemble predictions from 2001 to 2014-09; used throughout `runme.r` to replicate figures in the same order as in the article, even though the models needed to create it are estimated in the same script   
-*`ensemble_data.rda` - calibration/test data to estimate ensemble
-*`irc_data_mod.rda` - imputed data
-*`ensemble.rda` - saved ensemble model object
-*`irc-data-v3.rda` - raw, unimputed source data
-*`model_estimates.rda` - saved estimates for the 7 theme models
+* `all_preds.rda` - contains all theme/ensemble predictions from 2001 to 2014-09; used throughout `runme.r` to replicate figures in the same order as in the article, even though the models needed to create it are estimated in the same script   
+* `ensemble_data.rda` - calibration/test data to estimate ensemble
+* `irc_data_mod.rda` - imputed data
+* `ensemble.rda` - saved ensemble model object
+* `irc-data-v3.rda` - raw, unimputed source data
+* `model_estimates.rda` - saved estimates for the 7 theme models
 
 `graphics`
-
-Contains the graphics used in the article.
+* Contains the graphics used in the article.
 
 `R/packages`
-*`EBMAforecastbeta_0.44.tar.gz` – OS X source package
-*`EBMAforecastbeta_0.44.zip` – Windows source package
-*`spduration_0.12.tar.gz` – OS X source package
-*`spduration_0.12.zip` – Windows source package
+* `EBMAforecastbeta_0.44.tar.gz` – OS X source package
+* `EBMAforecastbeta_0.44.zip` – Windows source package
+* `spduration_0.12.tar.gz` – OS X source package
+* `spduration_0.12.zip` – Windows source package
 
 `R/utilities`
 * `ensemble_forecast.r` - helper functions to calculate ensemble forecast
 * `gather_preds.r` - gathers all theme/ensemble predictions from 2001 to 2014-09 in one data frame, `all_preds.rda`
-*`theme_models.r` - helper functions for theme model fit
-*`varDecomp.r` - helpfer functions for variable variance decomposition
-*`worldMap.r` - function for choropleth worldmap
+* `theme_models.r` - helper functions for theme model fit
+* `varDecomp.r` - helpfer functions for variable variance decomposition
+* `worldMap.r` - function for choropleth worldmap
 
 
 
