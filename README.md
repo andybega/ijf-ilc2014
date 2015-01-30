@@ -1,4 +1,4 @@
-**Replication materials for 
+**Replication materials for <br/>
 "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models"**
 ***
 
@@ -9,7 +9,7 @@ This article is a summary of a longer technical report. The complete [original P
 
 Citation:
 
-Beger, Andreas, Cassy L. Dorff, and Michael D. Ward, 2015, "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models," _International Journal of Forecasting_. 
+Beger, Andreas, Cassy L. Dorff, and Michael D. Ward, 2015, "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models," *International Journal of Forecasting*. 
 
 ```bibtex
 @article{beger2015irregular,
