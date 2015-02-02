@@ -2,7 +2,7 @@
 Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models**
 ***
 
-For questions contact the corresponding author [Michael Ward](mailto:michael.d.ward@duke.edu) or [Andreas Beger](andreas.beger@duke.edu).
+For questions contact the corresponding author [Michael Ward](mailto:michael.d.ward@duke.edu) or [Andreas Beger](mailto:andreas.beger@duke.edu).
 
 This article is a summary of a longer technical report for the [PITF](http://en.wikipedia.org/wiki/Political_Instability_Task_Force). The complete [original report](http://arxiv.org/abs/1409.7105) is available on arXiv.org, and contains a large amount of additional information on the method we used for forecasting, accuracy assessments, etc.
 
