@@ -1,5 +1,5 @@
 **Replication materials for:<br/>
-Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models**
+[Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models](http://www.sciencedirect.com/science/article/pii/S0169207015000485)**
 ***
 
 For questions contact the corresponding author [Michael Ward](mailto:michael.d.ward@duke.edu) or [Andreas Beger](mailto:andreas.beger@duke.edu).
@@ -9,17 +9,15 @@ This article is a summary of a longer technical report for the [PITF](http://en.
 
 **Citation:**
 
-Beger, Andreas, Cassy L. Dorff, and Michael D. Ward, 2015, "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models," *International Journal of Forecasting*. 
-
 ```bibtex
-@article{beger2015irregular,
+@article{beger2016irregular,
   title={Irregular Leadership Changes in 2014: Forecasts using ensemble, split-population duration models},
   author={Beger, Andreas and Dorff, Cassy L. and Ward, Michael D.},
   journal={International Journal of Forecasting},
-  year={2015},
-  volume={},
-  issue={},
-  pages={}
+  year={2016},
+  volume={32},
+  issue={1},
+  pages={98--111}
   }    
 ```
 
