@@ -1,20 +1,42 @@
 #
 #   Replication for 
-#	"Irregular Leadership Changes in 2014: Forecasts using ensemble, split-
+#
+#	  "Irregular Leadership Changes in 2014: Forecasts using ensemble, split-
 #    population duration models", International Journal of Forecasting
 #
-#	30 January 2015
-#	Andreas Beger (andreas.beger@duke.edu)
+#	  Andreas Beger (adbeger@gmail.com)
+#	  30 January 2015
 #
-
-# The "replication" folder, alongside with this script, contains 2 R packages
-# that are needed but not available on CRAN, several functions, and several
-# data files. The data files include the main data, "irc.data", as well 
-# as intermediate steps in the results like saved theme model estimates, 
-# the ensemble model data object and ensemble model estimates themselves.
+#   Additional data files needed for replication, as well as copies of the
+#   original model estimates, are on Harvard Dataverse at 
+#   https://doi.org/10.7910/DVN/28942. This script (line 95) will download 
+#   those if they are not present in the "data" folder. 
+#
+#   The "replication" folder, alongside with this script, contains 2 R packages
+#   that are needed but not available on CRAN, several functions, and several
+#   data files. The data files include the main data, "irc.data", as well 
+#   as intermediate steps in the results like saved theme model estimates, 
+#   the ensemble model data object and ensemble model estimates themselves.
 # 
-# Results may differ slightly by system, but we have included intermediate
-# estimates/data needed to exactly replicate the results reported.
+#   Results may differ slightly by system, but we have included intermediate
+#   estimates/data needed to exactly replicate the results reported.
+#
+#   Changelog
+#
+#   2015-01-30: original replication materials on GitHub
+#   2019-04-05: update/fix replication issues
+#     - use the CRAN version of spduration
+#     - add a note about the need to get files from dataverse
+#     - add several missing packages
+#     - fix inconsistencies in ensembleForecast() and predDate() relating
+#       to how the input given to weighInputs() was structured.
+#     - save some of the tex table output; NOTE that the results differ slightly
+#       from the paper when re-estimating the models. This might be because
+#       of changes in spduration since the old version included here. Use
+#       the saved models and predictions to exact replicate. 
+#     - for the 7 spduration models, the fit tables are a bit broken and the 
+#       ROC plots are currently broken because of changes in spduration. Didn't
+#       have time to fix it. 
 #
 
 
@@ -26,24 +48,25 @@
 ##
 ##------------------------------------------------------------------------------
 
-rm(list=ls())
-
 ##
 ##	CHANGE: path
 ##
 
 # Set to path containing replication folder
-setwd("~/Desktop/replication")
+setwd("~/Work/ijf-ilc2014/replication")
 
 # Install packages in R/packages if not already done
 if (!is.element("EBMAforecastbeta", installed.packages()[, 1])) {
-	install.packages("R/packages/EBMAforecastbeta_0.44.zip", repos=NULL, 
+  install.packages("ensembleBMA")
+	install.packages("R/packages/EBMAforecastbeta_0.44.tar.gz", repos=NULL, 
 		type="source")
 }
-if (!is.element("spduration", installed.packages()[, 1])) {
-	install.packages("R/packages/spduration_0.12.zip", repos=NULL, 
-		type="source")
-}
+
+# 2019-04-05: use the CRAN version, not this old one
+# if (!is.element("spduration", installed.packages()[, 1])) {
+# 	install.packages("R/packages/spduration_0.12.tar.gz", repos=NULL, 
+# 		type="source")
+# }
 
 
 # Load required libraries
@@ -63,6 +86,32 @@ library(sp)
 library(spduration)
 library(xtable)
 library(zoo)
+library("dataverse")
+library(grid)
+library(plyr)
+library("shape")
+library("forecast")
+
+
+# Download Dataverse data
+doi <- "doi:10.7910/DVN/28942"
+files <- get_dataset(doi)$files
+for (ff in files$filename) {
+  cat(ff)
+  to_file <- file.path("data", ff)
+  # skip if file is already downloaded
+  if (file.exists(to_file)) {
+    cat("...skip\n")
+    Sys.sleep(.5)
+    next
+  }
+  
+  cat("...downloading\n")
+  f <- get_file(ff, doi)
+  # path to write data to
+  writeBin(as.vector(f), to_file)
+}
+
 
 # Source helper functions
 source("R/utilities/theme_models.R")
@@ -95,7 +144,7 @@ world <- cshp(date=as.Date("2012-01-01"))
 world@data <- data.frame(world@data, data[match(world@data[, 'GWCODE'], data[, id]), ])
 
 # Set fill colors
-colorpal <- rev(brewer.pal(max(data[, x]), 'Reds'))
+colorpal <- rev(brewer.pal(max(data[, x]) + 1, 'Reds'))
 colors <- ifelse(is.na(world@data[, x])==T, '#B0B0B0', colorpal[match(world@data[, x], sort(unique(world@data[, x]), decreasing=T))])
     
 # Plot map
@@ -172,6 +221,7 @@ print(xtable(casesIrr, digits=0), include.rownames=FALSE)
 # Impute missing
 Y <- irc.data[, c(1,226:235)]
 leidos.imputed <- sbgcop.mcmc(Y,seed=123)
+
 plot(leidos.imputed)
 new.Y<-data.frame(leidos.imputed$Y.pmean)
 colnames(new.Y)<-c("ccode.i","prsincon.i","prsexcon.i","prsmilit.i",
@@ -224,7 +274,7 @@ test <- irc.data[irc.data$date>=calib.start & irc.data$date<=test.end, ]
 test$end.spell[test$date==max(test$date)] <- 1
 
 # Optionally save the processed data
-save(train, test, irc.data, file="data/irc_data_mod.rda")
+#save(train, test, irc.data, file="data/irc_data_mod.rda")
 #load("data/irc_data_mod.rda")
 
 ##------------------------------------------------------------------------------
@@ -242,9 +292,6 @@ var.data$i.conf.GOVtGOV.l1 <- with(var.data, i.verb.conf.GOVtGOV.l1 +
 	i.matl.conf.GOVtGOV.l1)
 var.data$i.coop.GOVtGOV.l1 <- with(var.data, i.verb.coop.GOVtGOV.l1 + 
 	i.verb.coop.GOVtGOV.l1)
-
-library(grid)
-library(plyr)
 
 source("R/utilities/varDecomp.R")
 
@@ -286,8 +333,12 @@ p <- ggplot(data=ss, aes(x=total, y=between.p)) +
 	scale_y_continuous(limits=c(0, 1)) +
 	labs(x="Total variance", y="Between/Total", col="") +
 	theme_bw() +
+  # 2019-04-05: new ggplot2 says:
+  # Warning message:
+  #   `legend.margin` must be specified using `margin()`. For the old behavior 
+  #   use legend.spacing 
 	theme(plot.title = element_text(vjust=2), legend.position="bottom",
-		legend.direction="vertical", legend.margin=unit(-0.6,"cm")) +
+		legend.direction="vertical", legend.spacing=unit(-0.6,"cm")) +
 	guides(col = guide_legend(ncol = 2)) 
 p <- p + geom_text(data=highlight, aes(x=total, y=between.p, label=label),
 	alpha=0.7, size=4) 
@@ -407,7 +458,7 @@ model1 <- spduration::spdur(
 	"atrisk ~ 1 + ldr.irregular + ldr.foreign + log10(mths.in.power+1)",
 	data=train)
 
-modelFitStats(model2)
+modelFitStats(model1)
 xtable(table.spdur(model1), caption="Leader characteristics model estimates",
 	label="tab:chatter")
 
@@ -546,7 +597,7 @@ for (i in 1:n.models) {
 	a.model <- get(paste0("model", i))
 	p.name  <- paste0("pred.", i)
 	print(p.name)
-	pr.out[, p.name] <- predict(a.model, data=test, stat="conditional hazard")
+	pr.out[, p.name] <- predict(a.model, newdata=test, stat="conditional hazard")
 	# fix exact 0's to slightly above 0, otherwise EBMA will not work
 	pr.out[, p.name] <- replace(pr.out[, p.name], pr.out[, p.name]<=0, 1e-19)
 }
@@ -636,8 +687,10 @@ cm.fit.table[, 5] <- apply(oo.sample.preds[3:10], 2, auc2, obs=oo.sample.preds$o
 cm.fit.table[, 6] <- apply(oo.sample.preds[3:10], 2, maxF, obs=oo.sample.preds$obs)
 
 # Print for latex
-print(xtable(cm.fit.table, digits=2, label="tab:ensemble", 
+tbl <- print(xtable(cm.fit.table, digits=2, label="tab:ensemble", 
 	caption="Ensemble model"), include.rownames=FALSE)
+writeLines(tbl, "tables/table1-fit-statistic.tex")
+
 
 ##
 ##		How is fit in the calibration data only?
@@ -654,7 +707,8 @@ apply(calib.preds[3:10], 2, maxF, obs=calib.preds$obs)
 ##
 ##------------------------------------------------------------------------------
 
-load("data/all_preds.rda")
+# Optionally you can run from here by loading the needed data below
+#load("data/all_preds.rda")
 
 cor.dat <- as.matrix(cor(all.preds[all.preds$date<=test.end, c(5:11, 4)]))
 cor.dat <- round(cor.dat, digits=2)
@@ -704,7 +758,10 @@ xy <- rbind(xy,
 p <- ggplot(data=xy, aes(x=recall, y=precision, col=Partition)) + 
 	scale_x_continuous(expand = c(0.01, 0.01)) + 
 	scale_y_continuous(expand = c(0.01, 0.01)) + 
-	geom_line(show_guide=TRUE) +
+  # 2019-04-05:
+  # Warning message:
+  # `show_guide` has been deprecated. Please use `show.legend` instead. 
+	geom_line(show.legend=TRUE) +
 	geom_abline(slope=1, color="gray", alpha=0.5) +
 	labs(x="FPR", y="TPR") + 
 	theme_bw() +
@@ -739,7 +796,11 @@ xy <- rbind(xy,
 	data.frame(Partition="Test", pr.data(Ensemble, obs, oo.sample.preds)))
 
 pr <- ggplot(data=xy, aes(x=recall, y=precision, col=Partition)) + 
-	geom_line(show_guide=TRUE) + labs(x="Recall", y="Precision") +
+  # 2019-04-05:
+  # Warning message:
+  # `show_guide` has been deprecated. Please use `show.legend` instead. 
+	geom_line(show.legend=TRUE) + 
+  labs(x="Recall", y="Precision") +
 	scale_y_log10() + theme_bw() + theme(legend.position=c(0.75,0.75))
 
 ggsave(filename="graphics/rec_prec_plot.png", plot=pr, width=3.4, height=3, units="in",
@@ -758,6 +819,8 @@ pr + geom_line(data=xy.themes, aes(group=model), colour="gray", alpha=0.5, show_
 ##
 ##------------------------------------------------------------------------------
 
+# To exactly replicate results:
+#load("data/all_preds.rda")
 
 # How many months out to predict?
 n.ahead <- 6
@@ -765,21 +828,24 @@ n.ahead <- 6
 ##		Create forecasts
 
 # Ensemble forecasts for n.ahead months
-fcast <- ensembleForecast(n.ahead, n.models=7)
-fcast <- fcast[order(fcast[, 1], decreasing=TRUE), ]
-head(fcast)
+fcast <- ensembleForecast(n.ahead, n.models=7, adjust = FALSE)
+
+# Order from highest to lowest
+fcast_high <- fcast[order(fcast[, 1], decreasing=TRUE), ]
+head(fcast_high)
 
 # Add cumulative total
 total <- data.frame(
 	gwcode=test[format(test$date, "%Y-%m")==format(test.end, "%Y-%m"), ]$ccode,
-	total=(1 - apply(1 - ensembleForecast(n.ahead, n.models=7), 1, prod))
+	total=(1 - apply(1 - fcast, 1, prod))
 	)
 
 # List of top 10 forecasts
 top.list <- head(total[order(total$total, decreasing=TRUE), ], 10)
 top.list <- data.frame(Country=rownames(top.list), Probability=top.list$total)
-print(xtable(top.list, caption="Top 10 forecasts for IRC between April and September 2014 (6 months) using March 2014 data", 
+tbl <- print(xtable(top.list, caption="Top 10 forecasts for IRC between April and September 2014 (6 months) using March 2014 data", 
 	label="tab:forecast"), include.rownames=FALSE)
+writeLines(tbl, "tables/table2-top10.tex")
 
 
 ##------------------------------------------------------------------------------
@@ -798,6 +864,7 @@ total$scaled <- total$total*100
 # Plot
 dpi <- 300
 png("graphics/map_6months.png", width=3*dpi, height=1.26*dpi, pointsize=20)
+par(mar = rep(.5, 4))
 worldMap("scaled", "gwcode", total, legend.title="Percent")
 dev.off()
 
