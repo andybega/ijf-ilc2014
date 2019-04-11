@@ -5,3 +5,6 @@
 replication/data/irc-data-v3.rda
 replication/data/irc_data_mod.rda
 replication/data/model_estimates.rda
+
+paper/*
+ijf-paper.pdf
